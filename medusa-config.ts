@@ -5,7 +5,7 @@ loadEnv(process.env.NODE_ENV || 'development', process.cwd())
 module.exports = defineConfig({
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
-    // Connection string for Redis instance
+    // Medusa v2 uses this redisUrl for internal workflows automatically
     redisUrl: process.env.REDIS_URL,
     http: {
       storeCors: process.env.STORE_CORS!,
@@ -16,28 +16,19 @@ module.exports = defineConfig({
     }
   },
   modules: {
-    // Powers background tasks and subscribers
+    // Keep these two, as they require explicit opt-in for Redis
     eventBus: {
-      resolve: "@medusajs/medusa/event-bus-redis",
+      resolve: "@medusajs/messaging-redis",
       options: {
         redisUrl: process.env.REDIS_URL,
       },
     },
-    // Required for high-performance product data caching
     cacheService: {
-      resolve: "@medusajs/medusa/cache-redis",
+      resolve: "@medusajs/cache-redis",
       options: {
         redisUrl: process.env.REDIS_URL,
       },
     },
-    // Essential for Medusa v2 workflows and checkout stability
-    workflowEngine: {
-      resolve: "@medusajs/medusa/workflow-engine-redis",
-      options: {
-        redis: {
-          url: process.env.REDIS_URL,
-        },
-      },
-    },
+    // REMOVED workflowEngine block to prevent "already defined" error
   },
 })
