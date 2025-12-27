@@ -19,14 +19,17 @@
 ## Required Environment Variables
 > Values are stored in Railway. Do NOT commit secrets.
 
-- DATABASE_URL
-- REDIS_URL
-- JWT_SECRET
-- COOKIE_SECRET
-- STORE_CORS
-- ADMIN_CORS
-- AUTH_CORS
-- PORT (provided automatically by Railway) 8080
+ADMIN_CORS="https://doc-lanes-front.vercel.app"
+AUTH_CORS="https://doc-lanes-front.vercel.app,http://localhost:8000"
+CACHE_REDIS_URL="${{Redis.REDIS_URL}}"
+COOKIE_SECRET=*****
+DATABASE_URL="${{Postgres.DATABASE_URL}}"
+DB_NAME="medusa-v2"
+JWT_SECRET=**********
+PORT=8080
+REDIS_URL="${{Redis.REDIS_URL}}"
+STORE_CORS="https://doc-lanes-front.vercel.app"
+
 
 ## Notes / Gotchas
 - App **will return 502** if the server listens on the wrong port.
