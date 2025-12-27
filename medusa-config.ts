@@ -1,11 +1,10 @@
-import { loadEnv, defineConfig } from '@medusajs/framework/utils'
+import { loadEnv, defineConfig } from "@medusajs/framework/utils"
 
-loadEnv(process.env.NODE_ENV || 'development', process.cwd())
+loadEnv(process.env.NODE_ENV || "development", process.cwd())
 
 module.exports = defineConfig({
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
-    // Medusa v2 uses this redisUrl for internal workflows automatically
     redisUrl: process.env.REDIS_URL,
     http: {
       storeCors: process.env.STORE_CORS!,
@@ -13,12 +12,11 @@ module.exports = defineConfig({
       authCors: process.env.AUTH_CORS!,
       jwtSecret: process.env.JWT_SECRET || "supersecret",
       cookieSecret: process.env.COOKIE_SECRET || "supersecret",
-    }
+    },
   },
   modules: {
-    // Keep these two, as they require explicit opt-in for Redis
     eventBus: {
-      resolve: "@medusajs/messaging-redis",
+      resolve: "@medusajs/event-bus-redis",
       options: {
         redisUrl: process.env.REDIS_URL,
       },
@@ -29,6 +27,5 @@ module.exports = defineConfig({
         redisUrl: process.env.REDIS_URL,
       },
     },
-    // REMOVED workflowEngine block to prevent "already defined" error
   },
 })
